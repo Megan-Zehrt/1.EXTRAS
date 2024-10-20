@@ -1,10 +1,10 @@
-// 23. Merge k Sorted Lists
+// 1448. Count Good Nodes in Binary Tree
 
 
 
-// You are given an array of k linked-lists lists, each linked-list is sorted in ascending order.
+// Given a binary tree root, a node X in the tree is named good if in the path from root to X there are no nodes with a value greater than X.
 
-// Merge all the linked-lists into one sorted linked-list and return it.
+// Return the number of good nodes in the binary tree.
 
 
 
@@ -13,36 +13,36 @@
 
 
 /**
- * Definition for singly-linked list.
- * function ListNode(val, next) {
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
  *     this.val = (val===undefined ? 0 : val)
- *     this.next = (next===undefined ? null : next)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
  * }
  */
 /**
- * @param {ListNode[]} lists
- * @return {ListNode}
+ * @param {TreeNode} root
+ * @return {number}
  */
-var mergeKLists = function(lists) {
-
-    let arr = []
-    let dummy = new ListNode()
-
-    for(let list of lists){
-        let cur = list
-        while(cur){
-            arr.push(cur.val)
-            cur = cur.next
-        }
-    }
+var goodNodes = function(root) {
     
-    arr.sort((a,b) => a-b)
-    let current = dummy
-    for(let num of arr){
-        let node = new ListNode(num)
-        current.next = node
-        current = current.next
+    let count = 0
+
+    function dfs(node, x){
+
+        if(node == null) return
+
+        if(node.val >= x){
+            count++
+        }
+
+        x = Math.max(x, node.val)
+
+        dfs(node.left, x)
+        dfs(node.right, x)
     }
 
-    return dummy.next
+    dfs(root, -Infinity)
+
+    return count
 };
